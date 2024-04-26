@@ -1,0 +1,14 @@
+﻿
+//Comando migracion inicial para postgres
+
+Add-Migration InitialCreate
+
+Update-Database
+
+
+
+{
+    "nombre":"facundo",
+    "apellido":"postman",
+    "fechaNacimiento":"2001-04-25T01:40:55.440Z"
+}

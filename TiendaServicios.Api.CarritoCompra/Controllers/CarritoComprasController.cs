@@ -20,10 +20,10 @@ namespace TiendaServicios.Api.CarritoCompra.Controllers
         {
             return await _mediator.Send(data);
         }
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<CarritoDto>> GetCarrito(int id)
-        //{
-        //    return await _mediator.Send(new Consulta.Ejecuta { CarritoSesionId = id });
-        //}
+        [HttpGet("{id}")]
+        public async Task<ActionResult<CarritoDto>> GetCarrito(int id)
+        {
+            return await _mediator.Send(new Consulta.Ejecuta { CarritoSesionId = id });
+        }
     }
 }

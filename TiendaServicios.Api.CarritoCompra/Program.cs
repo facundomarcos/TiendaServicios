@@ -18,6 +18,13 @@ builder.Services.AddDbContext<CarritoContexto>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.AddMediatR(typeof(Nuevo.Manejador).Assembly);
+
+builder.Services.AddHttpClient("Libros", client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["Services:Libros"]);
+});
+
+
 //builder.Services.AddAutoMapper(typeof(Consulta.Manejador));
 
 var app = builder.Build();

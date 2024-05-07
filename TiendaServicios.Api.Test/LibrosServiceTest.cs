@@ -68,7 +68,7 @@ namespace TiendaServicios.Api.Test
         {
             //Este Test es para unit test libro
 
-            System.Diagnostics.Debugger.Launch();
+           // System.Diagnostics.Debugger.Launch();
             //que metodo dentro de mi microservice libro se esta encargando 
             //de realizar la consulta de libros de la base de datos
             //1.- Emular a la instancia de EFC - ContextoLibreria
@@ -94,24 +94,24 @@ namespace TiendaServicios.Api.Test
             Assert.True(lista.Any());
         }
 
-        //[Fact]
-        //public async void GuardarLibro()
-        //{
-        //    System.Diagnostics.Debugger.Launch();
-        //    var options = new DbContextOptionsBuilder<ContextoLibreria>()
-        //        .UseInMemoryDatabase(databaseName: "BaseDatosLibro")
-        //        .Options;
+        [Fact]
+        public async void GuardarLibro()
+        {
+           // System.Diagnostics.Debugger.Launch();
+            var options = new DbContextOptionsBuilder<ContextoLibreria>()
+                .UseInMemoryDatabase(databaseName: "BaseDatosLibro")
+                .Options;
 
-        //    var contexto = new ContextoLibreria(options);
-        //    var request = new Nuevo.Ejecuta();
-        //    request.Titulo = "Libro de Microservice";
-        //    request.AutorLibro = Guid.Empty;
-        //    request.FechaPubicacion = DateTime.Now;
+            var contexto = new ContextoLibreria(options);
+            var request = new Nuevo.Ejecuta();
+            request.Titulo = "Libro de Microservice";
+            request.AutorLibro = Guid.Empty;
+            request.FechaPublicacion = DateTime.Now;
 
-        //    var manejador = new Nuevo.Manejador(contexto);
+            var manejador = new Nuevo.Manejador(contexto);
 
-        //    var libro = await manejador.Handle(request, new System.Threading.CancellationToken());
-        //    Assert.True(libro != null);
-        //}
+            var libro = await manejador.Handle(request, new System.Threading.CancellationToken());
+            Assert.True(libro != null);
+        }
     }
 }

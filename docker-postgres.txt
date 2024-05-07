@@ -1,0 +1,32 @@
+
+//imagen postgres
+docker pull postgres:latest
+
+//container
+docker run --name postgres-facu -e POSTGRES_PASSWORD=root -d -p 5432:5432 postgres:latest
+
+//entrar al container
+docker exec -it postgres-facu bash
+
+//entrar a la base de datos
+psql -U postgres
+
+//ver permisos
+\du
+
+//crear bd
+create database tiendalibroautor;
+
+//ver bases de datos
+\l
+
+//conectarse a la base de datos
+\c tiendalibroautor
+
+//ver tablas
+\d
+
+//verificar el connectionstring
+//ejecutar la migracion
+Add-Migration InitialCreate
+Update-Database

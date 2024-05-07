@@ -12,7 +12,7 @@ using TiendaServicios.Api.Autor.Persistencia;
 namespace TiendaServicios.Api.Autor.Migrations
 {
     [DbContext(typeof(ContextoAutor))]
-    [Migration("20240424235237_InitialCreate")]
+    [Migration("20240507143855_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

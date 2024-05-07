@@ -30,3 +30,22 @@ create database tiendalibroautor;
 //ejecutar la migracion
 Add-Migration InitialCreate
 Update-Database
+
+//Agregar el proyecto autor con add dockercompose (linux)
+
+//crear la network
+docker network create microservicenet
+//verificar
+docker network list
+//agregar el container postgres a la network
+docker network connect microservicenet postgres-facu
+//verificar que se agregó
+docker network inspect microservicenet
+//agregar estas lineas al docker-compose.yml
+networks:
+	default:
+		external:
+			name: microservicenet
+//agregar al docker-compose.override
+ports:
+- "6104:80"

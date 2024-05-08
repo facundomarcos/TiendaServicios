@@ -13,6 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TiendaServicios.Api.Test", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{A380CB77-7954-4F3F-B3FD-FCB3E6D63F69}"
 	ProjectSection(SolutionItems) = preProject
+		docker-mssql.txt = docker-mssql.txt
 		docker-postgres.txt = docker-postgres.txt
 	EndProjectSection
 EndProject

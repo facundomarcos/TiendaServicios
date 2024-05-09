@@ -21,3 +21,17 @@ services:
     ports:
       - "6106:80"
 
+
+  tiendaservicios.api.gateway2:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "80"
+
+
+  tiendaservicios.api.gateway5:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "80"
+

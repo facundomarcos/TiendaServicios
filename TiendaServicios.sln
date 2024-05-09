@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docker", "Docker", "{A380CB
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{4C72D7BB-69DA-4961-B780-57C009BCE3E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiendaServicios.Api.Gateway2", "..\TiendaServicios.Api.Gateway2\TiendaServicios.Api.Gateway2.csproj", "{2CE87643-79C8-4C3D-AF32-B548E05E9C0F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TiendaServicios.Api.Gateway2", "..\TiendaServicios.Api.Gateway2\TiendaServicios.Api.Gateway2.csproj", "{2CE87643-79C8-4C3D-AF32-B548E05E9C0F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

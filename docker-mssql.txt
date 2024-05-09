@@ -20,4 +20,9 @@ docker network inspect microservicenet
 
 
 
+//sobreescribir servicios en el docker compose
+- Services__Libros=http://tiendaservicios.api.libro
 
+
+Add-Migration InitialCreate
+Update-Database

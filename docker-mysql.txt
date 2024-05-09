@@ -1,0 +1,31 @@
+
+//descargar imagen
+docker pull mysql
+
+//crear container
+docker run --name mysql-facu -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=Q1w2e3r4$ mysql
+
+//entrar al container
+docker exec -it mysql-facu bash
+
+//entrar a la base de datos
+mysql -uroot -pQ1w2e3r4$
+
+//crear bd
+create database carritocompra;
+use carritocompra;
+show tables;
+
+//sobreescribir servicios en el docker compose
+- Services__Libros=http://tiendaservicios.api.libro
+
+//agregar el container mysql a la network
+docker network connect microservicenet mysql-facu
+
+//verificar que se agregó
+docker network inspect microservicenet
+
+
+
+
+

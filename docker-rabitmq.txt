@@ -1,0 +1,8 @@
+//imagen
+docker pull rabbitmq
+
+//contenedor
+docker run -d --hostname mi-rabbit-server --name rabbit-facu rabbitmq:3
+
+//servicio para ver las queves
+docker run -d --hostname mi-rabbit-server --name rabbit-facu-web -p 15672:15672  rabbitmq:3-management

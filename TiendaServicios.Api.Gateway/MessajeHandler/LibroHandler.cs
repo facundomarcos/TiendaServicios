@@ -1,4 +1,8 @@
 ﻿using System.Diagnostics;
+using System.Text.Json;
+using TiendaServicios.Api.Gateway.ImplementRemote;
+using TiendaServicios.Api.Gateway.InterfaceRemote;
+using TiendaServicios.Api.Gateway.LibroRemote;
 
 namespace TiendaServicios.Api.Gateway.MessajeHandler
 {
@@ -6,21 +10,47 @@ namespace TiendaServicios.Api.Gateway.MessajeHandler
     {
         private readonly ILogger<LibroHandler> _logger;
 
-        public LibroHandler(ILogger<LibroHandler> logger)
+        private readonly IAutorRemote _autorRemote;
+
+        public LibroHandler(ILogger<LibroHandler> logger, IAutorRemote autorRemote)
         {
             _logger = logger;
+            _autorRemote = autorRemote;
         }
 
+
+
         protected override async Task<HttpResponseMessage> SendAsync(
-            HttpRequestMessage request, CancellationToken cancellationToken)
+    HttpRequestMessage request, CancellationToken cancellationToken)
         {
             var tiempo = Stopwatch.StartNew();
             _logger.LogInformation("Inicia el request");
             var response = await base.SendAsync(request, cancellationToken);
+            if (response.IsSuccessStatusCode)
+            {
+                var contenido = await response.Content.ReadAsStringAsync();
+                var options = new JsonSerializerOptions();
+                options.PropertyNameCaseInsensitive = true;
+
+                var resultado = JsonSerializer.Deserialize<LibroModeloRemote>(contenido, options);
+
+                var responseAutor = await _autorRemote.GetAutor(resultado.AutorLibro ?? Guid.Empty);
+                _logger.LogInformation("Autor " + responseAutor.autor.Apellido.ToString());
+                if (responseAutor.resultado)
+                {
+                    var objetoAutor = responseAutor.autor;
+                    resultado.AutorData = objetoAutor;
+                    var resultadoStr = JsonSerializer.Serialize(resultado);
+
+                    response.Content = new StringContent(resultadoStr, System.Text.Encoding.UTF8, "application/json");
+                }
+            }
 
             _logger.LogInformation($"Este proceso se hizo en {tiempo.ElapsedMilliseconds} ms");
 
-            return await base.SendAsync(request, cancellationToken);
+            // Devuelve la respuesta modificada, no la original
+            return response;
         }
+
     }
 }

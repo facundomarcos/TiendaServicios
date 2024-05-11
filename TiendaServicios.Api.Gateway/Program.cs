@@ -1,5 +1,7 @@
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using TiendaServicios.Api.Gateway.ImplementRemote;
+using TiendaServicios.Api.Gateway.InterfaceRemote;
 using TiendaServicios.Api.Gateway.MessajeHandler;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +14,14 @@ var builder = WebApplication.CreateBuilder(args);
 //  .AddJsonFile("ocelot.json");
 // .AddJsonFile($"ocelot.{builder.Environment.EnvironmentName}.json");
 builder.Configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
+
+builder.Services.AddSingleton<IAutorRemote, AutorRemote>();
+
+builder.Services.AddHttpClient("AutorService", config =>
+{
+    config.BaseAddress = new Uri(builder.Configuration["Services:Autor"]);
+});
+
 
 
 builder.Services.AddOcelot().AddDelegatingHandler<LibroHandler>();

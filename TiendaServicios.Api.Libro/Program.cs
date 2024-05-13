@@ -3,10 +3,13 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using TiendaServicios.Api.Libro.Aplicacion;
 using TiendaServicios.Api.Libro.Persistencia;
+using TiendaServicios.RabbitMQ.Bus.BusRabbit;
+using TiendaServicios.RabbitMQ.Bus.Implement;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddTransient<IRabbitEventBus,RabbitEventBus>();
 
 builder.Services.AddControllers().AddFluentValidation(cfg =>cfg.RegisterValidatorsFromAssemblyContaining<Nuevo>());
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

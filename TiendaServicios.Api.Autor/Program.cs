@@ -3,12 +3,17 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using TiendaServicios.Api.Autor.Aplicacion;
+using TiendaServicios.Api.Autor.ManejadorRabbit;
 using TiendaServicios.Api.Autor.Persistencia;
+using TiendaServicios.RabbitMQ.Bus.BusRabbit;
+using TiendaServicios.RabbitMQ.Bus.EventoQueue;
+using TiendaServicios.RabbitMQ.Bus.Implement;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddTransient<IRabbitEventBus,RabbitEventBus>();
+builder.Services.AddTransient<IEventoManejador<EmailEventoQueue>, EmailEventoManejador>();
 builder.Services.AddControllers().AddFluentValidation(cfg => cfg.RegisterValidatorsFromAssemblyContaining<Nuevo>());
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -35,4 +40,8 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+var eventBus = app.Services.GetRequiredService<IRabbitEventBus>();
+
+//var eventBus = app.ApplicationServices.GetRequiredService<IRabbitEventBus>();
+eventBus.Subscribe<EmailEventoQueue, EmailEventoManejador>();
 app.Run();

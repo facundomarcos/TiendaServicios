@@ -6,3 +6,11 @@ docker run -d --hostname mi-rabbit-server --name rabbit-facu rabbitmq:3
 
 //servicio para ver las queves
 docker run -d --hostname mi-rabbit-server --name rabbit-facu-web -p 15672:15672  rabbitmq:3-management
+
+//agregar el container a la network
+docker network connect microservicenet rabbit-facu
+
+docker network connect microservicenet rabbit-facu-web
+
+//verificar que se agregó
+docker network inspect microservicenet

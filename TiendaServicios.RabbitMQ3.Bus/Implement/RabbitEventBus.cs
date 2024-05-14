@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -18,12 +19,14 @@ namespace TiendaServicios.RabbitMQ.Bus.Implement
         private readonly IMediator _mediator;
         private readonly Dictionary<string, List<Type>> _manejadores;
         private readonly List<Type> _eventoTipos;
+        private readonly IServiceScopeFactory _scopeFactory;
 
-        public RabbitEventBus(IMediator mediator)
+        public RabbitEventBus(IMediator mediator, IServiceScopeFactory scopeFactory)
         {
             _mediator = mediator;
             _manejadores = new Dictionary<string, List<Type>>();
             _eventoTipos = new List<Type>();
+            _scopeFactory = scopeFactory;
         }
 
         public Task EnviarComando<T>(T comando) where T : Comando
@@ -103,25 +106,30 @@ namespace TiendaServicios.RabbitMQ.Bus.Implement
             {
                 if(_manejadores.ContainsKey(nombreEvento))
                 {
-                    var subscriptions = _manejadores[nombreEvento];
-                    foreach( var sb in subscriptions )
+                    using (var scope = _scopeFactory.CreateScope())
                     {
-                        var manejador = Activator.CreateInstance(sb);
-                        if (manejador == null)
+                        var subscriptions = _manejadores[nombreEvento];
+                        foreach (var sb in subscriptions)
                         {
-                            continue;
+                            var manejador = scope.ServiceProvider.GetService(sb); //Activator.CreateInstance(sb);
+                            if (manejador == null)
+                            {
+                                continue;
+                            }
+
+                            var tipoEvento = _eventoTipos.SingleOrDefault(x => x.Name == nombreEvento);
+
+                            var eventoDS = JsonConvert.DeserializeObject(message, tipoEvento);
+
+                            var concretoTipo = typeof(IEventoManejador<>).MakeGenericType(tipoEvento);
+
+                            await (Task)concretoTipo.GetMethod("Handle").Invoke(manejador, new object[] { eventoDS });
+
+
                         }
-
-                        var tipoEvento = _eventoTipos.SingleOrDefault(x=>x.Name == nombreEvento);
-
-                        var eventoDS = JsonConvert.DeserializeObject(message, tipoEvento);
-
-                        var concretoTipo = typeof(IEventoManejador<>).MakeGenericType(tipoEvento);
-
-                        await (Task)concretoTipo.GetMethod("Handle").Invoke(manejador,new object[] {eventoDS});
-
-
                     }
+
+                 
 
 
 
